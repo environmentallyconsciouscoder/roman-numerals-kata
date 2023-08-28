@@ -4,5 +4,8 @@ package com.techreturners;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
+
+        RomanNumeralsConverter romanNumeralsConverter = new RomanNumeralsConverter();
+        romanNumeralsConverter.convert(1);
     }
 }
