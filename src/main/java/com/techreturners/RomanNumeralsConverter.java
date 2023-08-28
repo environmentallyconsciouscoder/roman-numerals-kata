@@ -3,10 +3,11 @@ package com.techreturners;
 public class RomanNumeralsConverter {
 
     public String convert(int number) {
-        System.out.println(number >= 1 && number <= 9);
 
         if (isNumberBetweenOneAndNine(number)) {
             return getRomanNumberBetweenOneAndNine(number);
+        } else if (isNumberBetweenTenAndThirty(number)) {
+            return getRomanNumberBetweenTenAndThirty(number);
         } else {
             return "Invalid input"; // Provide a default value for other cases
         }
@@ -14,6 +15,18 @@ public class RomanNumeralsConverter {
 
     private boolean isNumberBetweenOneAndNine(int number) {
         return number >= 1 && number <= 9;
+    }
+
+    private boolean isNumberBetweenTenAndThirty(int number) {
+        return number >= 10 && number <= 30;
+    }
+
+    private String getRomanNumberBetweenTenAndThirty(int number) {
+        int firstDigit = Integer.parseInt(Integer.toString(number).substring(0, 1));
+        int secondDigit = Integer.parseInt(Integer.toString(number).substring(1, 2));
+        String firstDigitInRomanNumeral = (firstDigit == 2) ? "XX" : (firstDigit == 3) ? "XXX" : "X";
+        String secondDigitInRomanNumeral = (secondDigit != 0) ? getRomanNumberBetweenOneAndNine(secondDigit): "";
+        return firstDigitInRomanNumeral + secondDigitInRomanNumeral;
     }
 
     private String getRomanNumberBetweenOneAndNine(int number) {
