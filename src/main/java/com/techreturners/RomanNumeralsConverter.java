@@ -1,48 +1,79 @@
 package com.techreturners;
 
+import java.util.*;
+
 public class RomanNumeralsConverter {
+
+    private static final List<Integer> decimalValue = Arrays.asList(
+            1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000
+    );
+
+    private static final List<String> romanNumeral = Arrays.asList(
+            "I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"
+    );
 
     public String convert(int number) {
 
-        if (isNumberBetweenOneAndNine(number)) {
-            return getRomanNumberBetweenOneAndNine(number);
-        } else if (isNumberBetweenTenAndThirty(number)) {
-            return getRomanNumberBetweenTenAndThirty(number);
+        int decimalNumber = number;
+        ArrayList<Integer> highestDecimalValueList = new ArrayList<>();
+
+        while (decimalNumber > 0) {
+            int highestDecimalValue = findHighestDecimalValue(decimalNumber);
+            highestDecimalValueList.add(highestDecimalValue);
+            decimalNumber -= highestDecimalValue;
+        }
+
+        System.out.println(highestDecimalValueList);
+        ArrayList<String> highestRomanNumeralList = findRomanNumeral(highestDecimalValueList);
+        System.out.println(highestRomanNumeralList);
+        String joinedStrings = String.join("", highestRomanNumeralList);
+        System.out.println(joinedStrings);
+
+        return joinedStrings;
+
+    }
+
+    private ArrayList<String> findRomanNumeral(ArrayList<Integer> highestDecimalValueList) {
+        ArrayList<String> highestRomanNumberalList = new ArrayList<>();
+
+        for (Object val : highestDecimalValueList) {
+            String numberString = String.valueOf(val);
+            int number = Integer.parseInt(numberString);
+            int index = decimalValue.indexOf(number);
+            highestRomanNumberalList.add(romanNumeral.get(index));
+        }
+        return highestRomanNumberalList;
+    }
+
+    private int findHighestDecimalValue(int number) {
+        int middleDecimalValue = decimalValue.get(6);
+
+        // does number exists in list
+        if (decimalValue.contains(number)) {
+            return number;
+        } else if (number > 1000) {
+            return 1000;
         } else {
-            return "Invalid input"; // Provide a default value for other cases
+
+            // number is greater than 50
+            if (number > middleDecimalValue) {
+                for (int i = 6; i <= decimalValue.size() - 1; i++) {
+                    if (number < decimalValue.get(i)) {
+                        return decimalValue.get(i - 1);
+                    }
+                }
+
+                // number is less than 50
+            } else if (number < middleDecimalValue) {
+                for (int i = 6; i >= 0; i--) {
+                    if (number > decimalValue.get(i)) {
+                        return decimalValue.get(i);
+                    }
+                }
+
+            }
         }
-    }
+        return 0;
+    };
 
-    private boolean isNumberBetweenOneAndNine(int number) {
-        return number >= 1 && number <= 9;
-    }
-
-    private boolean isNumberBetweenTenAndThirty(int number) {
-        return number >= 10 && number <= 30;
-    }
-
-    private String getRomanNumberBetweenTenAndThirty(int number) {
-        int firstDigit = Integer.parseInt(Integer.toString(number).substring(0, 1));
-        int secondDigit = Integer.parseInt(Integer.toString(number).substring(1, 2));
-        String firstDigitInRomanNumeral = (firstDigit == 2) ? "XX" : (firstDigit == 3) ? "XXX" : "X";
-        String secondDigitInRomanNumeral = (secondDigit != 0) ? getRomanNumberBetweenOneAndNine(secondDigit): "";
-        return firstDigitInRomanNumeral + secondDigitInRomanNumeral;
-    }
-
-    private String getRomanNumberBetweenOneAndNine(int number) {
-        String result = "";
-        switch (number) {
-            case 1 -> result = "I";
-            case 2 -> result = "II";
-            case 3 -> result = "III";
-            case 4 -> result = "IV";
-            case 5 -> result = "V";
-            case 6 -> result = "VI";
-            case 7 -> result = "VII";
-            case 8 -> result = "VIII";
-            case 9 -> result = "IX";
-            default -> System.out.println("there is no matching roman Number");
-        }
-        return result;
-    }
 }

@@ -6,6 +6,6 @@ public class Main {
     public static void main(String[] args) {
 
         RomanNumeralsConverter romanNumeralsConverter = new RomanNumeralsConverter();
-        romanNumeralsConverter.convert(10);
+        romanNumeralsConverter.convert(1997);
     }
 }
